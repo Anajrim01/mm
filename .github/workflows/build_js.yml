@@ -34,7 +34,7 @@ jobs:
 
       - name: Package Built Files
         run: |
-          if [ -d "dist" ]; then
+          if [ -d "node_modules" ]; then
             zip -r artifact.zip ./node_modules
           else
             echo "dist directory not found, packaging failed!"
