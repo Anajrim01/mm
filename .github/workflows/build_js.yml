@@ -35,7 +35,7 @@ jobs:
       - name: Package Built Files
         run: |
           if [ -d "dist" ]; then
-            zip -r artifact.zip dist/
+            zip -r artifact.zip /home/runner/work/mm/mm/wasm/
           else
             echo "dist directory not found, packaging failed!"
             exit 1
