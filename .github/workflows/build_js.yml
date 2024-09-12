@@ -9,15 +9,38 @@ concurrency:
 jobs:
   build_js:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v1
         with:
           node-version: 18
           registry-url: "https://registry.npmjs.org"
           cache: yarn
-      - name: Install
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-      - run: yarn install --frozen-lockfile
-      - run: yarn run build
-      - run: yarn run test
+
+      - name: Install Rust and Wasm-Pack
+        run: |
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build Project
+        run: yarn run build
+
+      - name: Test Project
+        run: yarn run test
+
+      - name: Package Built Files
+        run: zip -r artifact.zip dist/
+        # If you prefer zip, use the following line instead:
+        # run: zip -r artifact.zip dist/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-js-module
+          path: artifact.zip
+          # If you used zip, change the path to artifact.zip:
+          # path: artifact.zip
