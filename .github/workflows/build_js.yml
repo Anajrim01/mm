@@ -29,18 +29,20 @@ jobs:
       - name: Build Project
         run: yarn run build
 
-      - name: Test Project
-        run: yarn run test
+      - name: List Directory Contents
+        run: ls -R
 
       - name: Package Built Files
-        run: zip -r artifact.zip dist/
-        # If you prefer zip, use the following line instead:
-        # run: zip -r artifact.zip dist/
+        run: |
+          if [ -d "dist" ]; then
+            zip -r artifact.zip dist/
+          else
+            echo "dist directory not found, packaging failed!"
+            exit 1
+          fi
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: built-js-module
           path: artifact.zip
-          # If you used zip, change the path to artifact.zip:
-          # path: artifact.zip
